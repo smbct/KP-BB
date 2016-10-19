@@ -9,14 +9,14 @@
 #include "Tri.h"
 
 //------------------------------------------------------------------------------
-void trier(int nbVal, int* ind, int* val) {
+void trierDecroissant(int nbVal, int* ind, double* val) {
 
     triRec(0, nbVal-1, ind, val);
 
 }
 
 //------------------------------------------------------------------------------
-void triRec(int deb, int fin, int* ind, int* val) {
+void triRec(int deb, int fin, int* ind, double* val) {
 
     if(deb < fin) {
 
@@ -36,7 +36,7 @@ void triRec(int deb, int fin, int* ind, int* val) {
 }
 
 //------------------------------------------------------------------------------
-void fusion(int deb, int milieu, int fin, int* ind, int* val) {
+void fusion(int deb, int milieu, int fin, int* ind, double* val) {
 
     int* triees = malloc((long unsigned int)(fin-deb+1)*sizeof(int));
 
@@ -55,7 +55,7 @@ void fusion(int deb, int milieu, int fin, int* ind, int* val) {
         }
 
         // cas où la c'est l'élément du tableau de droite qui est sélectionné
-        if(cas != -1 && (cas == 1 || val[ind[indDte]] < val[ind[indGch]])) {
+        if(cas != -1 && (cas == 1 || val[ind[indDte]] > val[ind[indGch]])) {
             triees[i] = ind[indDte];
             indDte ++;
         } else { // cas où c'est l'élément de gauche
