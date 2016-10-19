@@ -17,5 +17,8 @@ Solution.o: Solution.h Solution.c
 main: main.o Probleme.o BranchBound.o Solution.o
 	$(CC) $(CFLAGS) main.o Probleme.o BranchBound.o Solution.o -lm -o main
 
+glpkSolver: Probleme.o Solution.o glpkSolver.c
+	$(CC) $(CFLAGS) Probleme.o Solution.o glpkSolver.c -l glpk -o glpkSolver
+
 clean:
-	@rm -rf *.o main
+	@rm -rf *.o main glpkSolver
