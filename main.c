@@ -1,12 +1,13 @@
 #include <stdio.h>
 #include <stdlib.h>
+#include <time.h>
 
 #include "BranchBound.h"
 
 //------------------------------------------------------------------------------
 int main(int argc, char* argv[]) {
 
-    Probleme pb;
+    /*Probleme pb;
 
     chargerProbleme(&pb, "instance2.dat");
 
@@ -26,7 +27,11 @@ int main(int argc, char* argv[]) {
 
     detruireSolution(&sol);
 
-    detruireProbleme(&pb);
+    detruireProbleme(&pb);*/
+
+    srand(time(NULL));
+
+    trier(0, 0, 0);
 
     return 0;
 }

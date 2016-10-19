@@ -14,8 +14,11 @@ BranchBound.o: BranchBound.h BranchBound.c
 Solution.o: Solution.h Solution.c
 	$(CC) $(CFLAGS) Solution.c -c
 
-main: main.o Probleme.o BranchBound.o Solution.o
-	$(CC) $(CFLAGS) main.o Probleme.o BranchBound.o Solution.o -lm -o main
+Tri.o: Tri.h Tri.c
+	$(CC) $(CFLAGS) Tri.c -c
+
+main: main.o Probleme.o BranchBound.o Solution.o Tri.o
+	$(CC) $(CFLAGS) main.o Probleme.o BranchBound.o Solution.o Tri.o -lm -o main
 
 glpkSolver: Probleme.o Solution.o glpkSolver.c
 	$(CC) $(CFLAGS) Probleme.o Solution.o glpkSolver.c -l glpk -o glpkSolver
