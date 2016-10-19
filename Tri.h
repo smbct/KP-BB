@@ -4,12 +4,12 @@
  */
 
 /**
- * \brief tri le tableau ind en fonction de certaines valeurs
+ * \brief tri le tableau ind par ordre décroissant en fonction de certaines valeurs
  * \param nbVal le nombre de valeur des tableaux
  * \param ind les indices des éléments à trier
  * \param val les valeurs des éléments à trier
  */
-void trier(int nbVal, int* ind, int* val);
+void trierDecroissant(int nbVal, int* ind, double* val);
 
 /**
  * \brief procédure récursive de tri fusion
@@ -18,7 +18,7 @@ void trier(int nbVal, int* ind, int* val);
  * \param ind les indices des valeurs à trier
  * \param val les valeurs à trier
  */
-void triRec(int deb, int fin, int* ind, int* val);
+void triRec(int deb, int fin, int* ind, double* val);
 
 /**
  * \brief fusion en un tableau trié de deux sous-tableaux triés
@@ -28,4 +28,4 @@ void triRec(int deb, int fin, int* ind, int* val);
  * \param ind tableaux des indices des valeurs à trier
  * \param val valeurs à trier
  */
-void fusion(int deb, int milieu, int fin, int* ind, int* val);
+void fusion(int deb, int milieu, int fin, int* ind, double* val);

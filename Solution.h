@@ -4,7 +4,7 @@
  */
 
 #ifndef SOLUTION_H
-#define SOLURION_H
+#define SOLUTION_H
 
 #include "Probleme.h"
 
@@ -41,4 +41,4 @@ void afficherSolution(Solution* sol);
  */
 void copierSolution(Solution* sol, Solution* copie);
 
-#endif
+#endif // SOLUTION_H

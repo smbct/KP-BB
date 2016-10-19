@@ -7,7 +7,7 @@
 //------------------------------------------------------------------------------
 int main(int argc, char* argv[]) {
 
-    /*Probleme pb;
+    Probleme pb;
 
     chargerProbleme(&pb, "instance2.dat");
 
@@ -27,11 +27,7 @@ int main(int argc, char* argv[]) {
 
     detruireSolution(&sol);
 
-    detruireProbleme(&pb);*/
-
-    srand(time(NULL));
-
-    trier(0, 0, 0);
+    detruireProbleme(&pb);
 
     return 0;
 }
