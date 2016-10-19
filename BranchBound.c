@@ -25,12 +25,6 @@ void BranchAndBound(Solution* opt) {
         // une feuille de l'arbre a été atteinte
         if(ind == sol.pb->nbVar) {
 
-            printf("feuille\nsolution : ");
-            afficherSolution(&sol);
-            printf("residu : %d\n", sol.residu);
-            printf("z = %d\n", sol.z);
-            printf("\n");
-
             if(sol.z > inf) { // amélioration de la solution actuelle
                 inf = sol.z;
                 copierSolution(&sol, opt);
@@ -47,8 +41,6 @@ void BranchAndBound(Solution* opt) {
 
             // relaxation continue du problème
             relaxation(&sol, ind, &relax, &realisable);
-            printf("relaxation = %d\n", relax);
-            printf("inf = %d\n", inf);
 
             // la borne supérieure est initialisée
             if(sup == -1) {
@@ -63,7 +55,6 @@ void BranchAndBound(Solution* opt) {
                     copierSolution(&sol, opt);
                 }
 
-                printf("realisable!\n");
                 if(ind == 0 || relax == sup) {
                     continuer = 0;
                 } else {
@@ -77,7 +68,6 @@ void BranchAndBound(Solution* opt) {
                 if(relax > inf) {
                     descente(&sol, &ind);
                 } else { // backtracking
-                    printf("coupe!\n");
                     backtracking(&sol, &ind);
                 }
             }
@@ -88,8 +78,6 @@ void BranchAndBound(Solution* opt) {
         }
 
     }
-
-    printf("Valeur optimale : %d\n", inf);
 
     detruireSolution(&sol);
 
@@ -172,10 +160,5 @@ void backtracking(Solution *sol, int* ind) {
             *ind -= 1;
         }
     }
-
-    printf("après backtrack : \n");
-    afficherSolution(sol);
-    printf("indice : %d\n", *ind);
-    printf("\n");
 
 }
