@@ -20,8 +20,11 @@ Tri.o: Tri.h Tri.c
 main: main.o Probleme.o BranchBound.o Solution.o Tri.o
 	$(CC) $(CFLAGS) main.o Probleme.o BranchBound.o Solution.o Tri.o -lm -o main
 
-glpkSolver: Probleme.o Solution.o glpkSolver.c
-	$(CC) $(CFLAGS) Probleme.o Solution.o glpkSolver.c -l glpk -o glpkSolver
+glpkSolver: Probleme.o Solution.o glpkSolver.c Tri.o
+	$(CC) $(CFLAGS) Probleme.o Solution.o Tri.o glpkSolver.c -l glpk -o glpkSolver
+
+generateur: generateur.c Probleme.o Tri.o
+	$(CC) $(CFAGS) generateur.c Probleme.o Tri.o -o generateur
 
 clean:
 	@rm -rf *.o main glpkSolver

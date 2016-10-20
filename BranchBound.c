@@ -70,6 +70,7 @@ void BranchAndBound(Solution* opt) {
                 } else { // backtracking
                     backtracking(&sol, &ind);
                 }
+
             }
         }
 
@@ -139,8 +140,8 @@ void descente(Solution *sol, int* ind) {
         *ind += 1;
 
     }
-    // la descente conduit à une feuille de l'arbre
-    *ind = 7;
+    // la descente conduit toujours à une feuille de l'arbre
+    *ind = sol->pb->nbVar;
 
 }
 

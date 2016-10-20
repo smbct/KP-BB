@@ -30,7 +30,6 @@ void triRec(int deb, int fin, int* ind, double* val) {
         }
 
         fusion(deb, milieu, fin, ind, val);
-
     }
 
 }
@@ -45,26 +44,17 @@ void fusion(int deb, int milieu, int fin, int* ind, double* val) {
 
     for(int i = 0; i < fin-deb+1; i++) { // parcours de toutes les valeurs à trier
 
-        int cas = 0;
-
-        // verif des indices
-        if(indGch > milieu) { // droite doit avancer, gauche ne peut plus
-            cas = 1;
-        } else if(indDte > fin) { // gauche doit avancer, droite ne peut plus
-            cas = -1;
-        }
-
         // cas où la c'est l'élément du tableau de droite qui est sélectionné
-        if(cas != -1 && (cas == 1 || val[ind[indDte]] > val[ind[indGch]])) {
+        if(indDte <= fin && (indGch > milieu || val[ind[indDte]] > val[ind[indGch]])) {
             triees[i] = ind[indDte];
             indDte ++;
-        } else { // cas où c'est l'élément de gauche
+        } else { // cas où c'est l'élément de gauche qui est sélectionné
             triees[i] = ind[indGch];
             indGch ++;
         }
     }
 
-    // copie des valeurs triees
+    // copie des valeurs triees dans le tableau original
     for(int i = deb; i <= fin; i++) {
         ind[i] = triees[i-deb];
     }

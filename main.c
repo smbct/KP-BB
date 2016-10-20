@@ -5,29 +5,34 @@
 #include "BranchBound.h"
 
 //------------------------------------------------------------------------------
-int main(int argc, char* argv[]) {
+int main(int argc, char** argv) {
 
-    Probleme pb;
+    if(argc > 1) {
 
-    chargerProbleme(&pb, "instance2.dat");
+        Probleme pb;
 
-    printf("Problème à résoudre : \n\n");
-    afficherProbleme(&pb);
-    printf("\n");
+        chargerProbleme(&pb, argv[1]);
 
-    Solution sol;
-    creerSolution(&pb, &sol);
+        afficherProbleme(&pb);
+        printf("\n");
 
-    BranchAndBound(&sol);
+        Solution sol;
+        creerSolution(&pb, &sol);
 
-    printf("Solution optimale : \n");
-    afficherSolution(&sol);
-    printf("z = %d\n", sol.z);
-    printf("capacité résiduelle : %d\n", sol.residu);
+        BranchAndBound(&sol);
 
-    detruireSolution(&sol);
+        printf("Solution optimale : \n");
+        afficherSolution(&sol);
+        printf("z = %d\n", sol.z);
+        printf("capacité résiduelle : %d\n\n\n", sol.residu);
 
-    detruireProbleme(&pb);
+        detruireSolution(&sol);
+
+        detruireProbleme(&pb);
+
+    } else {
+        printf("Veuillez donner le nom d'une instance valide avec le programme.\n");
+    }
 
     return 0;
 }

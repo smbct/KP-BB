@@ -23,6 +23,20 @@ typedef struct {
 void chargerProbleme(Probleme* ord, char* nom);
 
 /**
+ * \brief enregistrement de l'instance dans un fichier
+ * \param pb l'instance à enregistrer
+ * \param nom le nom du fichier à créer
+ */
+void enregistrerProbleme(Probleme* pb, char* nom);
+
+/**
+ * \brief création d'un problème non initialisé
+ * \param pb le problème à allouer
+ * \param nbVar le nombre de variable du problème
+ */
+void creerProblemeVide(Probleme* pb, int nbVar);
+
+/**
  * \brief création d'un problème à partir d'un autre dans lequel les variables sont ordonnées par utilité
  * \param pb le problème original
  * \param ord le problème ordonné
