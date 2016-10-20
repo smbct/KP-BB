@@ -42,6 +42,47 @@ void chargerProbleme(Probleme* ord, char* nom) {
     creerProblemeOrdonne(&pb, ord);
     detruireProbleme(&pb);
 
+    fclose(fichier);
+
+}
+
+//------------------------------------------------------------------------------
+void enregistrerProbleme(Probleme* pb, char* nom) {
+
+    FILE* fichier = fopen(nom, "w");
+
+    // nombre de variable
+    fprintf(fichier, "%d\n", pb->nbVar);
+
+    // profits
+    for(int i = 0; i < pb->nbVar; i++) {
+        fprintf(fichier, "%d", pb->profit[i]);
+        if(i < pb->nbVar-1) {
+            fprintf(fichier, " ");
+        }
+    }
+
+    // capacité
+    fprintf(fichier, "\n%d\n", pb->k);
+
+    // poids
+    for(int i = 0; i < pb->nbVar; i++) {
+        fprintf(fichier, "%d", pb->poids[i]);
+        if(i < pb->nbVar-1) {
+            fprintf(fichier, " ");
+        }
+    }
+    fprintf(fichier, "\n");
+
+    fclose(fichier);
+
+}
+
+//------------------------------------------------------------------------------
+void creerProblemeVide(Probleme* pb, int nbVar) {
+    pb->nbVar = nbVar;
+    pb->profit = malloc((long unsigned int)pb->nbVar*sizeof(int));
+    pb->poids = malloc((long unsigned int)pb->nbVar*sizeof(int));
 }
 
 //------------------------------------------------------------------------------

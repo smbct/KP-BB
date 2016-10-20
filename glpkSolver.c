@@ -20,32 +20,42 @@
 void resoudre(Probleme* pb, Solution* sol);
 
 //------------------------------------------------------------------------------
-int main(int argc, char* argv[]) {
+int main(int argc, char** argv) {
 
-    Probleme pb;
+    if(argc > 1) {
 
-    chargerProbleme(&pb, "instance2.dat");
+        Probleme pb;
 
-    afficherProbleme(&pb);
+        chargerProbleme(&pb, argv[1]);
 
-    Solution sol;
-    creerSolution(&pb, &sol);
+        afficherProbleme(&pb);
 
-    resoudre(&pb, &sol);
+        Solution sol;
+        creerSolution(&pb, &sol);
 
-    printf("Solution optimale du problème : \n");
-    afficherSolution(&sol);
-    printf("z = %d\n", sol.z);
+        resoudre(&pb, &sol);
 
-    detruireSolution(&sol);
+        printf("\nSolution optimale du problème avec glpk : \n");
+        afficherSolution(&sol);
+        printf("z = %d\n\n\n", sol.z);
 
-    detruireProbleme(&pb);
+        detruireSolution(&sol);
+
+        detruireProbleme(&pb);
+
+    } else {
+        printf("Veuillez donner le nom d'une instance valide avec le programme.\n");
+    }
+
 
     return 0;
 }
 
 //------------------------------------------------------------------------------
 void resoudre(Probleme* pb, Solution* sol) {
+
+    //désactivation du log de glpk
+    glp_term_out(0);
 
     glp_prob* prob;
     prob = glp_create_prob();
