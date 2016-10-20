@@ -16,6 +16,9 @@ int main(int argc, char** argv) {
         afficherProbleme(&pb);
         printf("\n");
 
+        Probleme ord;
+        creerProblemeOrdonne(&pb, &ord);
+
         Solution sol;
         creerSolution(&pb, &sol);
 

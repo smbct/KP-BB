@@ -40,7 +40,7 @@ void BranchAndBound(Solution* opt) {
         } else {
 
             // relaxation continue du problème
-            relaxation(&sol, ind, &relax, &realisable);
+            relaxation(&sol, &ind, &relax, &realisable);
 
             // la borne supérieure est initialisée
             if(sup == -1) {
@@ -86,14 +86,14 @@ void BranchAndBound(Solution* opt) {
 
 
 //------------------------------------------------------------------------------
-void relaxation(Solution *sol, int ind, int* sup, int* realisable) {
+void relaxation(Solution *sol, int* ind, int* sup, int* realisable) {
 
     *realisable = 0;
 
     // relaxation linéaire du problème
     int affecter = 1;
 
-    int indVar = ind;
+    int indVar = *ind;
 
     int relax = sol->z;
     int capa = sol->residu;
@@ -104,6 +104,7 @@ void relaxation(Solution *sol, int ind, int* sup, int* realisable) {
         if(capa >= sol->pb->poids[indVar]) {
             capa -= sol->pb->poids[indVar];
             relax += sol->pb->profit[indVar];
+            sol->valeur[indVar] = 1;
             indVar ++;
         } else { // arrêt dès que ça ne l'est plus
             affecter = 0;
@@ -112,6 +113,13 @@ void relaxation(Solution *sol, int ind, int* sup, int* realisable) {
 
     if(capa == 0) {
         *realisable = 1;
+        sol->residu = 0;
+        *ind = sol->pb->nbVar;
+        sol->z = relax;
+    } else { // si la solution n'est pas réalisable, il faut annuler les changements
+        for(int i = *ind; i < indVar; i++) {
+            sol->valeur[i] = 0;
+        }
     }
 
     if(capa > 0 && indVar < sol->pb->nbVar) { // toutes les variables n'ont pas été affectées et toute la capacite n'a pas été utilisée
@@ -124,18 +132,13 @@ void relaxation(Solution *sol, int ind, int* sup, int* realisable) {
 //------------------------------------------------------------------------------
 void descente(Solution *sol, int* ind) {
 
-    int continuer = 1;
-    while(continuer && *ind < sol->pb->nbVar) {
+    while(*ind < sol->pb->nbVar) {
 
         // ajout de tous les objets possibles et mise à jour de la solution
         if(sol->pb->poids[*ind] <= sol->residu) {
             sol->valeur[*ind] = 1;
             sol->residu -= sol->pb->poids[*ind];
             sol->z += sol->pb->profit[*ind];
-
-            if(sol->residu == 0) {
-                continuer = 0;
-            }
         }
         *ind += 1;
 

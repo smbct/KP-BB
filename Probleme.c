@@ -40,6 +40,7 @@ void chargerProbleme(Probleme* ord, char* nom) {
 
     // création du problème ordonné, utilisable par le solveur
     creerProblemeOrdonne(&pb, ord);
+
     detruireProbleme(&pb);
 
     fclose(fichier);
@@ -110,7 +111,7 @@ void creerProblemeOrdonne(Probleme* pb, Probleme* ord) {
 
     for(int i = 0; i < pb->nbVar; i++) {
         ord->profit[i] = pb->profit[perm[i]];
-        ord->poids[i] = pb->poids[i];
+        ord->poids[i] = pb->poids[perm[i]];
     }
 
     free(utilite);
@@ -142,7 +143,7 @@ void afficherProbleme(Probleme* pb) {
 void calculerUtilites(Probleme* pb, double* utilite) {
 
     for(int i = 0; i < pb->nbVar; i++) {
-        utilite[i] = (double)pb->profit[i]/(double)pb->poids[i];
+        utilite[i] = ((double)pb->profit[i])/((double)pb->poids[i]);
     }
 
 }
