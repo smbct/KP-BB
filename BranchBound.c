@@ -153,16 +153,17 @@ void backtracking(Solution *sol, int* ind) {
 
     int continuer = 1;
 
-    while(continuer && *ind > 0) {
+    while(continuer && *ind >= 0) {
         if(sol->valeur[*ind] == 1) { // mise à jour de la solution et arret du backtracking
             sol->valeur[*ind] = 0; // réaffectation de la variable à 0
             sol->z -= sol->pb->profit[*ind];
             sol->residu += sol->pb->poids[*ind];
             continuer = 0;
-            *ind += 1;
         } else { // la dernière valeur affectée à 1 n'a pas été trouvée
             *ind -= 1;
         }
     }
+
+    *ind += 1;
 
 }
