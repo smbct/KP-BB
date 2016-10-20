@@ -16,6 +16,17 @@ int main(int argc, char** argv) {
         afficherProbleme(&pb);
         printf("\n");
 
+        double *utilite = malloc(pb.nbVar*sizeof(double));
+        calculerUtilites(&pb, utilite);
+
+        /*printf("utilite : \n");
+        for(int i = 0; i < pb.nbVar; i++) {
+            printf("%f, ", utilite[i]);
+        }
+        printf("\n");
+
+        free(utilite);*/
+
         Probleme ord;
         creerProblemeOrdonne(&pb, &ord);
 
