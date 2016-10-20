@@ -21,7 +21,7 @@ void BranchAndBound(Solution* opt);
  * \param sup la valeur de la relaxation
  * \param realisable vrai ssi la relaxation donne une solution réalisable
  */
-void relaxation(Solution *sol, int ind, int* sup, int* realisable);
+void relaxation(Solution *sol, int* ind, int* sup, int* realisable);
 
 
 /**
