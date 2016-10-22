@@ -18,10 +18,11 @@ void BranchAndBound(Solution* opt);
  * \brief calcule la relaxation continue du problème
  * \param sol les variables affectées et non affectées
  * \param ind l'indice de la première variable du sous-problème
+ * \param borne la borne choisie pour la relaxation
  * \param sup la valeur de la relaxation
  * \param realisable vrai ssi la relaxation donne une solution réalisable
  */
-void relaxation(Solution *sol, int* ind, int* sup, int* realisable);
+void relaxation(Solution *sol, int* ind, int borne, int* sup, int* realisable);
 
 
 /**

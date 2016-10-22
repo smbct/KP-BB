@@ -39,8 +39,8 @@ void BranchAndBound(Solution* opt) {
 
         } else {
 
-            // relaxation continue du problème
-            relaxation(&sol, &ind, &relax, &realisable);
+            // relaxation du problème
+            relaxation(&sol, &ind, 1, &relax, &realisable);
 
             // la borne supérieure est initialisée
             if(sup == -1) {
@@ -86,7 +86,7 @@ void BranchAndBound(Solution* opt) {
 
 
 //------------------------------------------------------------------------------
-void relaxation(Solution *sol, int* ind, int* sup, int* realisable) {
+void relaxation(Solution *sol, int* ind, int borne, int* sup, int* realisable) {
 
     *realisable = 0;
 
@@ -123,7 +123,26 @@ void relaxation(Solution *sol, int* ind, int* sup, int* realisable) {
     }
 
     if(capa > 0 && indVar < sol->pb->nbVar) { // toutes les variables n'ont pas été affectées et toute la capacite n'a pas été utilisée
-        relax += (int)floor(((double)capa/(double)sol->pb->poids[indVar])*(double)sol->pb->profit[indVar]);
+
+        if(borne == 1) { // relaxation C^0
+            relax += (int)floor(((double)capa/(double)sol->pb->poids[indVar])*(double)sol->pb->profit[indVar]);
+        } else { // bornes de Martello and Toth
+
+            int U0 = -1, U1 = -1;
+            if(indVar+1 < sol->pb->nbVar) {
+                U0 = (int)floor( (double)capa * ( (double)sol->pb->profit[indVar+1] / (double)sol->pb->poids[indVar+1] ) );
+            }
+            if(indVar > 0) {
+                U1 = (int) floor( (double)sol->pb->profit[indVar] - ((double)sol->pb->poids[indVar] - (double)capa) * ((double)sol->pb->profit[indVar-1] / (double)sol->pb->poids[indVar-1]) );
+            }
+
+            if(U0 != -1 && (U1 == -1 || U0 < U0)) {
+                relax += U0;
+            } else {
+                relax += U1;
+            }
+        }
+
     }
 
     *sup = relax;
