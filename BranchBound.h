@@ -24,6 +24,15 @@ void BranchAndBound(Solution* opt);
  */
 void relaxation(Solution *sol, int* ind, int borne, int* sup, int* realisable);
 
+/**
+ * \brief calcule la relaxation de Hudson et [Fayard & Plateau et Villela & Bornstein]
+ * \param sol les variables affectées et non affectées
+ * \param ind l'indice de la première variable du sous-problème
+ * \param borne la borne choisie pour la relaxation
+ * \param sup la valeur de la relaxation
+ * \param realisable vrai ssi la relaxation donne une solution réalisable
+ */
+void relaxation2(Solution* sol, int* ind, int borne, int* sup, int* realisable);
 
 /**
  * \brief effectue une plus profonde descente pour tenter de résoudre le problème
