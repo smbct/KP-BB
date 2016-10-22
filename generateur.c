@@ -34,11 +34,11 @@ int main(int argc, char** argv) {
     int nbVar = 10;
     for(int i = 0; i < 20; i++) {
 
-        sprintf(nom, "instances/rnd%d.dat", nbVar);
+        sprintf(nom, "instances/wcorr%d.dat", nbVar);
 
-        genererInstance(nbVar, randRange(50, 100), nom);
+        genererInstance(nbVar, randRange(10000, 500000), nom);
 
-        nbVar += 10;
+        nbVar += 1000;
     }
 
 
@@ -61,8 +61,16 @@ void genererInstance(int nbVar, int k, char* nom) {
 
 
     for(int i = 0; i < pb.nbVar; i++) {
-        pb.profit[i] = rand()%100;
-        pb.poids[i] = randRange((double)pb.k*0.2, (double)pb.k*0.5);
+        if(i == 0) {
+            pb.profit[i] = rand()%100;
+            // pb.poids[i] = randRange((double)pb.k*0.00005, (double)pb.k*0.0001);
+            pb.poids[i] = ((double)pb.k/(double)nbVar)*(double)randRange(200, 310)*0.01;
+            // printf("%d\n", pb.poids[i]);
+        } else { // correllation entre les instances
+            double utilite = (double)pb.profit[0]/(double)pb.poids[0];
+            pb.poids[i] = ((double)pb.k/(double)nbVar)*(double)randRange(200, 310)*0.01;
+            pb.profit[i] = (int) (/*((double)randRange(999, 1000)*0.001) **/ utilite * (double)pb.poids[i]);
+        }
     }
 
     enregistrerProbleme(&pb, nom);

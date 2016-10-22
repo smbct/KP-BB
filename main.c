@@ -16,10 +16,10 @@ int main(int argc, char** argv) {
         afficherProbleme(&pb);
         printf("\n");
 
-        double *utilite = malloc(pb.nbVar*sizeof(double));
+        /*double *utilite = malloc(pb.nbVar*sizeof(double));
         calculerUtilites(&pb, utilite);
 
-        /*printf("utilite : \n");
+        printf("utilités : \n");
         for(int i = 0; i < pb.nbVar; i++) {
             printf("%f, ", utilite[i]);
         }
@@ -33,12 +33,19 @@ int main(int argc, char** argv) {
         Solution sol;
         creerSolution(&pb, &sol);
 
+        // thanks http://stackoverflow.com/questions/5248915/execution-time-of-c-program#5249150
+        clock_t begin = clock();
         BranchAndBound(&sol);
+        clock_t end = clock();
+
+        double temps_ecoule = (double)(end - begin) / CLOCKS_PER_SEC;
 
         printf("Solution optimale : \n");
         afficherSolution(&sol);
         printf("z = %d\n", sol.z);
         printf("capacité résiduelle : %d\n\n\n", sol.residu);
+        printf("temps écoulé : %fs\n", temps_ecoule);
+
 
         detruireSolution(&sol);
 

@@ -6,6 +6,7 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
+#include <time.h>
 
 #include <glpk.h>
 
@@ -16,8 +17,9 @@
  * \brief résolution du problème du sac à dos avec glpk
  * \param pb l'instance du problème à résoudre
  * \param sol une solution optimale du problème
+ * \param temps_ecoule le temps mis pour résoudre l'instance
  */
-void resoudre(Probleme* pb, Solution* sol);
+void resoudre(Probleme* pb, Solution* sol, double* temps_ecoule);
 
 //------------------------------------------------------------------------------
 int main(int argc, char** argv) {
@@ -33,11 +35,13 @@ int main(int argc, char** argv) {
         Solution sol;
         creerSolution(&pb, &sol);
 
-        resoudre(&pb, &sol);
+        double temps_ecoule;
+        resoudre(&pb, &sol, &temps_ecoule);
 
         printf("\nSolution optimale du problème avec glpk : \n");
         afficherSolution(&sol);
         printf("z = %d\n\n\n", sol.z);
+        printf("temps écoulé : %fs\n", temps_ecoule);
 
         detruireSolution(&sol);
 
@@ -52,7 +56,7 @@ int main(int argc, char** argv) {
 }
 
 //------------------------------------------------------------------------------
-void resoudre(Probleme* pb, Solution* sol) {
+void resoudre(Probleme* pb, Solution* sol, double* temps_ecoule) {
 
     //désactivation du log de glpk
     glp_term_out(0);
@@ -89,9 +93,13 @@ void resoudre(Probleme* pb, Solution* sol) {
     // chargement de la matrice
     glp_load_matrix(prob, pb->nbVar, ia, ja, ar);
 
+    clock_t begin = clock();
     // résolution
     glp_simplex(prob, NULL);
     glp_intopt(prob, NULL);
+    clock_t end = clock();
+
+    *temps_ecoule = (double)(end - begin) / CLOCKS_PER_SEC;
 
     sol->z = (int)glp_mip_obj_val(prob);
     for(int i = 0; i < pb->nbVar; i++) {
