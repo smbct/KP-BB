@@ -13,8 +13,8 @@ int main(int argc, char** argv) {
 
         chargerProbleme(&pb, argv[1]);
 
-        afficherProbleme(&pb);
-        printf("\n");
+        // afficherProbleme(&pb);
+        // printf("\n");
 
         /*double *utilite = malloc(pb.nbVar*sizeof(double));
         calculerUtilites(&pb, utilite);
@@ -41,9 +41,9 @@ int main(int argc, char** argv) {
         double temps_ecoule = (double)(end - begin) / CLOCKS_PER_SEC;
 
         printf("Solution optimale : \n");
-        afficherSolution(&sol);
+        // afficherSolution(&sol);
         printf("z = %d\n", sol.z);
-        printf("capacité résiduelle : %d\n\n\n", sol.residu);
+        printf("capacité résiduelle : %d\n\n", sol.residu);
         printf("temps écoulé : %fs\n", temps_ecoule);
 
 
