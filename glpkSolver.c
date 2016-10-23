@@ -30,7 +30,7 @@ int main(int argc, char** argv) {
 
         chargerProbleme(&pb, argv[1]);
 
-        afficherProbleme(&pb);
+        // afficherProbleme(&pb);
 
         Solution sol;
         creerSolution(&pb, &sol);
@@ -39,7 +39,7 @@ int main(int argc, char** argv) {
         resoudre(&pb, &sol, &temps_ecoule);
 
         printf("\nSolution optimale du problème avec glpk : \n");
-        afficherSolution(&sol);
+        // afficherSolution(&sol);
         printf("z = %d\n\n\n", sol.z);
         printf("temps écoulé : %fs\n", temps_ecoule);
 

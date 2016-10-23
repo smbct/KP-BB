@@ -40,7 +40,7 @@ void BranchAndBound(Solution* opt) {
         } else {
 
             // relaxation du problème
-            relaxation2(&sol, &ind, 1, &relax, &realisable);
+            relaxation2(&sol, &ind, 2, &relax, &realisable);
 
             // la borne supérieure est initialisée
             if(sup == -1) {
@@ -129,6 +129,8 @@ void relaxation(Solution *sol, int* ind, int borne, int* sup, int* realisable) {
             relax += (int)floor(((double)capa/(double)sol->pb->poids[indVar])*(double)sol->pb->profit[indVar]);
         } else { // bornes de Martello and Toth
 
+            printf("borne C^0 : %d\n", relax + (int)floor(((double)capa/(double)sol->pb->poids[indVar])*(double)sol->pb->profit[indVar]));
+
             int U0 = -1, U1 = -1;
             if(indVar+1 < sol->pb->nbVar) {
                 U0 = (int)floor( (double)capa * ( (double)sol->pb->profit[indVar+1] / (double)sol->pb->poids[indVar+1] ) );
@@ -138,6 +140,8 @@ void relaxation(Solution *sol, int* ind, int borne, int* sup, int* realisable) {
             }
 
             relax += (U0 > U1 ? U0 : U1);
+
+            printf("borne Martello : %d\n", relax);
         }
 
     }
@@ -148,6 +152,10 @@ void relaxation(Solution *sol, int* ind, int borne, int* sup, int* realisable) {
 
 //------------------------------------------------------------------------------
 void relaxation2(Solution* sol, int* ind, int borne, int* sup, int* realisable) {
+
+    /*printf("début relaxation : \n");
+    afficherSolution(sol);
+    printf("z = %d\n", sol->z);*/
 
     *realisable = 0;
 
@@ -180,6 +188,19 @@ void relaxation2(Solution* sol, int* ind, int borne, int* sup, int* realisable) 
         sol->z = relax;
     } else { // si la solution n'est pas réalisable, il faut annuler les changements et calculer les bornes
 
+        // affichage de la borne de la relaxation continue
+        // printf("ancienne borne : %d\n", relax + (int)floor(((double)capa/(double)sol->pb->poids[indVar])*(double)sol->pb->profit[indVar]));
+
+        /*int U2 = -1, U3 = -1;
+        if(indVar+1 < sol->pb->nbVar) {
+            U2 = (int)floor( (double)capa * ( (double)sol->pb->profit[indVar+1] / (double)sol->pb->poids[indVar+1] ) );
+        }
+        if(indVar > *ind) {
+            U3 = (int) floor( (double)sol->pb->profit[indVar] - ((double)sol->pb->poids[indVar] - (double)capa) * ((double)sol->pb->profit[indVar-1] / (double)sol->pb->poids[indVar-1]) );
+        }
+        printf("Borne Martello moins bonne : %d\n", relax + (U2 > U3 ? U2 : U3));*/
+
+
         for(int i = *ind; i < indVar; i++) {
             sol->valeur[i] = 0;
         }
@@ -193,13 +214,13 @@ void relaxation2(Solution* sol, int* ind, int borne, int* sup, int* realisable) 
         int trouves1 = 0, trouves0 = 0;
         while(!trouves0 && j < sol->pb->nbVar) {
 
-            if(cs_0 >= sol->pb->poids[j]) {
+            if(!trouves0 && cs_0 >= sol->pb->poids[j]) {
                 if(j != indVar) {
                     cs_0 -= sol->pb->poids[j];
                     sommePs_0 += sol->pb->profit[j];
                     if(s_0 < sol->pb->nbVar-1 && s_0+1 != indVar) {
                         s_0 ++;
-                    } else if(s_0 + 1 == indVar && s_0 < sol->pb->nbVar-2) {
+                    } else if(s_0 + 1 == indVar) { // l'élément critique est sauté
                         s_0 += 2;
                     } else {
                         trouves0 = 1;
@@ -216,10 +237,10 @@ void relaxation2(Solution* sol, int* ind, int borne, int* sup, int* realisable) 
                 }
                 if(s_1 < sol->pb->nbVar-1 && s_1+1 != indVar) {
                     s_1 ++;
-                } else if(s_1 + 1 == indVar && s_1 < sol->pb->nbVar-2) {
+                } else if(s_1 + 1 == indVar) { // on s'assure d'éviter l'élément critique
                     s_1 += 2;
                 } else {
-                    trouves0 = 1;
+                    trouves1 = 1;
                 }
             } else {
                 trouves1 = 1;
@@ -228,18 +249,22 @@ void relaxation2(Solution* sol, int* ind, int borne, int* sup, int* realisable) 
             j ++;
         }
 
-        printf("debut : %d, fin : %d, s0 : %d, s1 : %d, indvar : %d\n", *ind, sol->pb->nbVar-1, s_0, s_1, indVar);
+        /*printf("debut : %d, fin : %d, s0 : %d, s1 : %d, indvar : %d\n", *ind, sol->pb->nbVar-1, s_0, s_1, indVar);
+        printf("sommePs_0 : %d, cs_0 : %d, sommePs_1 : %d, cs_1 : %d\n", sommePs_0, cs_0, sommePs_1, cs_1);*/
 
-        int U0 = -1;
-        int U1 = -1;
+        int U0 = sommePs_0;
+        int U1 = sommePs_1;
         if(s_0 >= *ind && s_0 < sol->pb->nbVar) {
-            U0 = sommePs_0 + (int)floor((double)cs_0 * ( (double)sol->pb->poids[s_0] / (double)sol->pb->profit[s_0] ) );
+            U0 += (int)floor((double)cs_0 * ( (double)sol->pb->profit[s_0] / (double)sol->pb->poids[s_0] ) );
         }
         if(s_1 >= *ind && s_1 < sol->pb->nbVar) {
-            U1 = sommePs_1 + (int)floor((double)cs_1 * ( (double)sol->pb->poids[s_1] / (double)sol->pb->profit[s_1] ) );
+            U1 = sommePs_1 + (int)floor((double)cs_1 * ( (double)sol->pb->profit[s_1] / (double)sol->pb->poids[s_1] ) );
         }
 
         relax = sol->z + (U0 > U1 ? U0 : U1);
+
+        /*printf("U0 : %d, U1: %d\n", sol->z + U0, sol->z + U1);
+        printf("nouvelle borne : %d\n\n\n", relax);*/
 
         // printf("relax meilleure : %d\n", relax);
 
