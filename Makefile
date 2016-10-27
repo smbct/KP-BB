@@ -2,29 +2,22 @@
 CC = gcc
 CFLAGS = -std=c99 -pedantic -Wfatal-errors -Wconversion -Wredundant-decls -Wshadow -Wall -Wextra
 
-main.o: main.c
-	$(CC) $(CFLAGS) main.c -c
+OBJECTS_FILES = src/Probleme.o src/BranchBound.o src/Solution.o src/Tri.o
 
-Probleme.o: Probleme.h Probleme.c
-	$(CC) $(CFLAGS) Probleme.c -c
+%.o: %.c %.h
+	$(CC) $(CFLAGS) $< -c -o $@
 
-BranchBound.o: BranchBound.h BranchBound.c
-	$(CC) $(CFLAGS) BranchBound.c -c
+%.o: %.c
+	$(CC) $(CFLAGS) $< -c -o $@
 
-Solution.o: Solution.h Solution.c
-	$(CC) $(CFLAGS) Solution.c -c
+solver: $(OBJECTS_FILES) src/main.c
+	$(CC) $(CFLAGS) $(OBJECTS_FILES) src/main.c -lm -o solver
 
-Tri.o: Tri.h Tri.c
-	$(CC) $(CFLAGS) Tri.c -c
+glpkSolver: $(OBJECTS_FILES) src/glpkSolver.c
+	$(CC) $(CFLAGS) $(OBJECTS_FILES) src/glpkSolver.c -l glpk -o glpkSolver
 
-main: main.o Probleme.o BranchBound.o Solution.o Tri.o
-	$(CC) $(CFLAGS) main.o Probleme.o BranchBound.o Solution.o Tri.o -lm -o main
-
-glpkSolver: Probleme.o Solution.o glpkSolver.c Tri.o
-	$(CC) $(CFLAGS) Probleme.o Solution.o Tri.o glpkSolver.c -l glpk -o glpkSolver
-
-generateur: generateur.c Probleme.o Tri.o
-	$(CC) $(CFAGS) generateur.c Probleme.o Tri.o -o generateur
+generateur: $(OBJECTS_FILES) src/generateur.c
+	$(CC) $(CFAGS) $(OBJECTS_FILES) src/generateur.c -o generateur
 
 clean:
-	@rm -rf *.o main glpkSolver
+	@rm -rf src/*.o solver glpkSolver generateur
