@@ -1,6 +1,7 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <time.h>
+#include <math.h>
 
 #include "BranchBound.h"
 
@@ -33,12 +34,13 @@ int main(int argc, char** argv) {
         Solution sol;
         creerSolution(&pb, &sol);
 
-        // thanks http://stackoverflow.com/questions/5248915/execution-time-of-c-program#5249150
+        // thanks to http://stackoverflow.com/questions/5248915/execution-time-of-c-program#5249150
         clock_t begin = clock();
         BranchAndBound(&sol);
         clock_t end = clock();
 
         double temps_ecoule = (double)(end - begin) / CLOCKS_PER_SEC;
+        int ms = (int)floor(temps_ecoule*10000);
 
         printf("Solution optimale : \n");
         // afficherSolution(&sol);
