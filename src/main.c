@@ -10,78 +10,54 @@
 //------------------------------------------------------------------------------
 int main(int argc, char** argv) {
 
-    if(argc > 1) {
+    if(argc > 2) {
 
         Probleme pb;
 
-        char* pos = strrchr(argv[1], '/');
-        if(pos == NULL) {
-            pos = argv[1];
-        }
-        char* nom = pos+1;
-
+        // chargement du problème
         chargerProbleme(&pb, argv[1]);
 
         // afficherProbleme(&pb);
-        // printf("\n");
 
-        /*double *utilite = malloc(pb.nbVar*sizeof(double));
-        calculerUtilites(&pb, utilite);
-
-        printf("utilités : \n");
-        for(int i = 0; i < pb.nbVar; i++) {
-            printf("%f, ", utilite[i]);
-        }
-        printf("\n");
-
-        free(utilite);*/
-
+        // obtention d'un problème ordonné
         Probleme ord;
         creerProblemeOrdonne(&pb, &ord);
 
         Solution sol;
         creerSolution(&pb, &sol);
 
-        double tempsB1 = 0, tempsB2 = 0, tempsB3 = 0;
+        double temps = 0;
 
         // thanks to http://stackoverflow.com/questions/5248915/execution-time-of-c-program#5249150
         clock_t begin, end;
 
+        // exécution du branch and bound avec choix de la borne
         begin = clock();
-        BranchAndBound(&sol, 1);
+        if(argv[2][0] == '1') {
+            BranchAndBound(&sol, 1);
+        } else if(argv[2][0] == '2') {
+            BranchAndBound(&sol, 2);
+        } else {
+            BranchAndBound(&sol, 3);
+        }
         end = clock();
-        tempsB1 = (double)(end - begin) / CLOCKS_PER_SEC;
+        temps = (double)(end - begin) / CLOCKS_PER_SEC;
+        temps *= 1000;
 
-        begin = clock();
-        BranchAndBound(&sol, 2);
-        end = clock();
-        tempsB2 = (double)(end - begin) / CLOCKS_PER_SEC;
+        // affichage de la solution optimale
+        printf("Solution optimale : \n");
 
-        begin = clock();
-        BranchAndBound(&sol, 3);
-        end = clock();
-        tempsB3 = (double)(end - begin) / CLOCKS_PER_SEC;
-
-        // printf("Solution optimale : \n");
-
-        // afficherSolution(&sol);
-        // printf("z = %d\n", sol.z);
-        // printf("capacité résiduelle : %d\n\n", sol.residu);
-        // printf("temps écoulé : %fs\n", temps_ecoule);
-
-        tempsB1 *= 1000.;
-        tempsB2 *= 1000.;
-        tempsB3 *= 1000.;
-
-        printf(nom);
-        printf(" & %f & %f & %f\n", tempsB1, tempsB2, tempsB3);
+        afficherSolution(&sol);
+        printf("z = %d\n", sol.z);
+        printf("capacité résiduelle : %d\n\n", sol.residu);
+        printf("temps écoulé : %fms\n", temps);
 
         detruireSolution(&sol);
 
         detruireProbleme(&pb);
 
     } else {
-        printf("Veuillez donner le nom d'une instance valide avec le programme.\n");
+        printf("Veuillez donner le nom d'une instance valide avec le programme ainsi qu'un borne valide (1, 2 ou 3).\n");
     }
 
     return 0;
