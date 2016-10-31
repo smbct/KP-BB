@@ -34,3 +34,6 @@
 
 # doc
 Doc/*
+
+# instances
+instances/pisinger/*.dat
