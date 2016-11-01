@@ -40,21 +40,13 @@ void BranchAndBound(Solution* opt, int borne) {
         } else {
 
             // relaxation du problème et calcule d'une borne supérieure
-            switch(borne) {
-                case 1:
-                    relaxation1(&sol, &ind, &relax, &realisable);
-                    break;
-                case 2:
-                    relaxation2(&sol, &ind, &relax, &realisable);
-                    break;
-                case 3:
-                    relaxation3(&sol, &ind, &relax, &realisable);
-                    break;
-                default:
-                    relaxation1(&sol, &ind, &relax, &realisable);
-                    break;
+            if(borne == 1) {
+                relaxation1(&sol, &ind, &relax, &realisable);
+            } else if(borne == 2) {
+                relaxation2(&sol, &ind, &relax, &realisable);
+            } else {
+                relaxation3(&sol, &ind, &relax, &realisable);
             }
-
 
             // la borne supérieure est initialisée
             if(sup == -1) {
@@ -186,6 +178,8 @@ void relaxation2(Solution *sol, int* ind, int* sup, int* realisable) {
 
         // bornes de Martello and Toth
 
+        // printf("U1 : %d\n", relax + (int)floor(((double)capa/(double)sol->pb->poids[indVar])*(double)sol->pb->profit[indVar]));
+
         int U0 = -1, U1 = -1;
         if(indVar+1 < sol->pb->nbVar) {
             U0 = (int)floor( (double)capa * ( (double)sol->pb->profit[indVar+1] / (double)sol->pb->poids[indVar+1] ) );
@@ -195,6 +189,7 @@ void relaxation2(Solution *sol, int* ind, int* sup, int* realisable) {
         }
         relax += (U0 > U1 ? U0 : U1);
 
+        // printf("U2 : %d\n\n", relax);
     }
 
     *sup = relax;
