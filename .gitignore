@@ -37,3 +37,6 @@ Doc/*
 
 # instances
 instances/pisinger/*
+
+# rendu
+rendu/*
